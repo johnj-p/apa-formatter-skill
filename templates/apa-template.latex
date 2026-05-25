@@ -1,0 +1,132 @@
+\PassOptionsToPackage{unicode=true}{hyperref}
+\providecommand{\xmpquote}[1]{#1}
+\documentclass[12pt, letterpaper, oneside]{article}
+\setcounter{secnumdepth}{0} % APA 7: no numbered headings
+
+% ---- Packages ----
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{textcomp}
+\usepackage{newtxtext}
+\usepackage{geometry}
+\geometry{margin=1in}
+\usepackage{setspace}
+\doublespacing
+\usepackage{parskip}
+\setlength{\parindent}{0.5in}
+\usepackage{authblk}
+\usepackage{fancyhdr}
+
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{hyphenat}
+\newcounter{none}
+\usepackage{graphicx}
+$if(bibliography)$
+\usepackage[style=apa, backend=biber, citestyle=apa]{biblatex}
+$endif$
+\usepackage{xurl}
+\urlstyle{same}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true, linkcolor=black, citecolor=black, urlcolor=black, breaklinks=true}
+
+% ---- Page numbering ----
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[R]{\thepage}
+\renewcommand{\headrulewidth}{0pt}
+
+% ---- Title page variables ----
+$if(title)$
+\title{$title$}
+$endif$
+$if(author)$
+\author{$author$}
+$endif$
+$if(institution)$
+\affil{$institution$}
+$endif$
+$if(date)$
+\date{$date$}
+$endif$
+
+% ---- Abstract ----
+$if(abstract)$
+\newcommand{\abstractText}{$abstract$}
+$endif$
+
+% ---- Keywords ----
+$if(keywords)$
+\newcommand{\keywordText}{$for(keywords)$$keywords$$sep$, $endfor$}
+$endif$
+
+% ---- Bibliography ----
+$if(bibliography)$
+\addbibresource{$bibliography$}
+$endif$
+
+% ---- Hanging indent for references ----
+\newenvironment{refsect}{%
+  \parindent=0pt\emergencystretch=1em
+  \everypar{\hangindent=0.5in\hangafter=1}%
+}{%
+  \par
+}
+
+% ---- Body ----
+\begin{document}
+
+% ---- Title page ----
+\begin{titlepage}
+\centering
+\vspace*{3cm}
+{\doublespacing
+{\LARGE \bfseries $title$ \par}
+\vspace{1.5cm}
+{\large $author$ \par}
+\vspace{0.5cm}
+{\large $institution$ \par}
+\vspace{0.5cm}
+{\large $course$ \par}
+\vspace{0.3cm}
+{\large $professor$ \par}
+\vspace{1.5cm}
+{\large $date$ \par}
+\vfill
+}
+\end{titlepage}
+
+% ---- Abstract page ----
+$if(abstract)$
+\newpage
+\begin{center}
+\textbf{\large $if(abstract-label)$$abstract-label$$else$Abstract$endif$}
+\end{center}
+\vspace{0.5cm}
+\noindent\abstractText\par
+$if(keywords)$
+\vspace{0.5cm}
+$if(keywords-label)$\textit{$keywords-label$}$else$\textit{Keywords:}$endif$ \keywordText
+$endif$
+$endif$
+
+% ---- Table of Contents ----
+$if(toc)$
+\newpage
+$if(toc-label)$\renewcommand{\contentsname}{$toc-label$}$endif$
+\tableofcontents
+\newpage
+$endif$
+
+% ---- Body ----
+\newpage
+$body$
+
+% ---- References ----
+\newpage
+$if(bibliography)$
+\printbibliography[heading=bibintoc, title={References}]
+$endif$
+
+\end{document}

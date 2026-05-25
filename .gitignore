@@ -1,0 +1,21 @@
+# LaTeX aux files
+*.aux
+*.log
+*.out
+*.toc
+*.bbl
+*.blg
+*.bcf
+*.run.xml
+*.synctex.gz
+*.fdb_latexmk
+*.fls
+
+# Temp / OS
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+
+# Pandoc temp
+/tmp/
