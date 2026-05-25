@@ -27,6 +27,10 @@
 - Template defaults to English if variables are omitted
 - Test file updated with Spanish labels ("Resumen", "Palabras clave:", "Índice")
 
+## Dev notes
+- Commits en español, descriptivos, con bullets de cambios
+- Preferir squash a un solo commit por feature antes de push
+
 ## Feedback / Improvements
 - [ ] Add automatic DOI resolution via crossref API
 - [ ] Full figure APA caption support
