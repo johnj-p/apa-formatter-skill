@@ -95,6 +95,21 @@
 - If user accepts: generates 150-250 word descriptive abstract and representative keywords
 - If user declines: leaves placeholder and requests manual completion
 
+## [2026-05-29] — Processed: Proyecto Pensamiento computacional.md (v3)
+- Type: article (ATE sobre pensamiento algorítmico con cubo Rubik)
+- Issues found: missing YAML metadata (abstract, keywords, toc), bold headings instead of markdown headings, empty headings (`### `, `#### `), missing APA captions in 7 tables, "Alba Pastor (2013)" should be CAST (2011), dangling quote, missing space after quote, "Referencias" at wrong heading level
+- Corrections applied: YAML frontmatter added with auto-generated abstract (~190 words) and keywords, bold headings converted to proper heading levels (2-4), empty headings removed, APA captions added to all 7 tables, citation corrected to CAST (2011), dangling quote fixed, space added after quote, "Referencias" changed to `# Referencias` (Level 1) with `\newpage` before it, references wrapped in `\begin{refsect}` with `\textit{}` for titles, YouTube URLs wrapped in `<>`, refsect environment fixed (`\end{refsect}` was misspelled as `\end{refsect}`)
+- PDF generated: yes (53 KB, 13 pages, 0 errors, via pandoc → xelatex ×2 con APA template)
+- Notes: TOC shows all sections. 0 overfull/underfull boxes. Minipage bug detected and auto-fixed.
+
+## [2026-05-29] — Processed: Proyecto Pensamiento computacional.md (v4 — revisión APA)
+- Type: article (ATE sobre pensamiento algorítmico con cubo Rubik)
+- Issues found in review: major section headings at Level 2 instead of Level 1; Piaget (1991) and Vygotsky (2009) in references but not cited in text; CAST year should be 2013 (translation consulted) not 2011; missing DOIs/URLs for CAST and MEN; "y otros" in reference list (not allowed in APA 7); ambiguous narrative citation "Alba Pastor (CAST, 2011)"; long cell text in tables; YouTube videos without formal APA references
+- Corrections applied: sections changed from `##` to `#` (Level 1); Piaget and Vygotsky removed from references; CAST year changed to 2013 with original year note; URLs added for CAST and MEN; "y otros" replaced with explicit authors; narrative citation rephrased; table cell text shortened
+- Skill improvements: added checks for uncited references, author list completeness (no "et al." in references), translated works citation year, missing DOIs/URLs; fixed bold-to-heading rule (sections principales → `#` Level 1); added YouTube video reference format
+- Template improvements: fixed `\everypar` leak in `refsect` environment (now resets after `\end{refsect}`)
+- PDF generated: yes (53 KB, 13 pages, 0 errors, via pandoc → xelatex ×2 con APA template)
+
 ## Feedback / Improvements
 - [ ] Add automatic DOI resolution via crossref API
 - [ ] Full figure APA caption support

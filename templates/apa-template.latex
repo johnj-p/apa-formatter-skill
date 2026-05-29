@@ -110,7 +110,7 @@ $endif$
   \parindent=0pt\emergencystretch=1em
   \everypar{\hangindent=0.5in\hangafter=1}%
 }{%
-  \par
+  \par\everypar{}%
 }
 
 % ---- Body ----

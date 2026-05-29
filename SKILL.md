@@ -50,7 +50,11 @@ Read the user's `.md` file and check for:
 - **Headings**: proper APA 7 levels (5 levels max)
   - **Bold-as-headings**: detect lines where `**bold text**` is used as a heading (no `#` prefix). These no generan entradas en el TOC porque pandoc/LaTeX no las reconoce como secciones. Para detectarlos: buscar líneas que empiezan con `**` seguidas de texto y que no tienen `#` al inicio. También detectar `## **bold heading**` (bold redundante dentro de heading markdown).
 - **Citations**: detect parenthetical `(Author, year)` and narrative `Author (year)` patterns
+  - **Translated works**: si una cita corresponde a una obra traducida, verificar que el año usado sea el de la **versión consultada** (traducción), no el año de la obra original. La referencia debe incluir "(Obra original publicada en AAAA)" al final.
 - **References section**: present? formatted correctly?
+  - **Uncited references**: detectar referencias en la lista que **no tienen ninguna cita** en el cuerpo del documento. Reportar como warning: "La referencia 'X' aparece en la lista pero no está citada en el texto. Debe eliminarse o agregarse una cita."
+  - **Author list**: detectar `et al.` o `y otros` dentro de la lista de referencias. APA 7 no permite estas abreviaciones en la lista de referencias — todos los autores (hasta 20) deben listarse explícitamente. Si no se conoce la lista completa, reportar: "La referencia 'X' usa 'et al.' en la lista de referencias. APA 7 exige listar todos los autores (hasta 20). Verificar la lista completa de autores."
+  - **Missing DOIs/URLs**: detectar referencias sin DOI/URL cuando el documento citado es accesible en línea. Sugerir agregarlos.
 - **Tables**: any `|` pipe tables or HTML tables — do they have APA-required title (italic) and note?
   - **Wide tables**: if a pipe table has **6+ columns**, warning: pandoc miscalcula los anchos de columna y genera overfull \hbox. Sugerir: fusionar columnas, abreviar contenido o convertir a LaTeX puro.
   - **Long cell text**: si alguna celda tiene texto >80 caracteres en una tabla de 4+ columnas, warning: puede desbordar. Sugerir acortar o dividir.
@@ -80,8 +84,11 @@ Ask questions in Spanish to gather missing information:
 
 1. **Zotero SQLite**: try to read `$env:USERPROFILE\Zotero\zotero.sqlite` in read-only mode using SQLite query to extract items. Generate a temporary `.bib` file with Better BibTeX keys.
 2. **Fallback**: if SQLite fails or is unavailable, ask user for path to a `.bib` file.
-3. **Cross-check**: verify every in-text citation has a matching entry in the references list and vice versa.
-4. **URLs/DOIs**: flag references missing DOIs or with broken URLs.
+3. **Cross-check**: verify every in-text citation has a matching entry in the references list **and vice versa** (every reference must be cited in text).
+   - Si hay referencias sin cita correspondiente, reportar y preguntar si eliminarlas o agregar citas.
+   - Si hay citas sin referencia, agregar la entrada faltante si es posible o reportar.
+4. **Author list completeness**: detectar `et al.` o `y otros` dentro de la lista de referencias. APA 7 exige listar todos los autores (hasta 20) en la lista de referencias. Si no se dispone de la lista completa, reportar como issue y preguntar al usuario.
+5. **URLs/DOIs**: flag references missing DOIs or with broken URLs. Sugerir agregar URLs para obras disponibles en línea (especialmente documentos gubernamentales, pautas y artículos).
 
 If no `.bib` is available, the skill will work with inline references and format them in APA 7 style (hanging indent, italics for titles, etc.).
 
@@ -93,6 +100,11 @@ Report problems clearly:
 - "La cita '(García, 2018)' no tiene entrada en referencias."
 - "El encabezado 'Metodología' debería ser Nivel 2, no Nivel 1."
 - "La línea X usa **negrita** como título en vez de heading markdown. Esto impide que aparezca en el TOC."
+- "La referencia 'Piaget (1991) aparece en la lista pero no está citada en el texto. Debe eliminarse o agregarse una cita."
+- "La referencia 'Moreno Angarita et al. (2014)' usa 'et al.' en la lista. APA 7 exige listar todos los autores (hasta 20). Verificar la lista completa."
+- "La cita '(CAST, 2011)' corresponde a una traducción de 2013. El año debe ser el de la versión consultada: (CAST, 2013). La referencia debe incluir '(Obra original publicada en 2011)'."
+- "La referencia 'Ministerio de Educación Nacional (2022)' no tiene URL. Los documentos gubernamentales disponibles en línea deben incluir el enlace."
+- "La referencia 'CAST (2011)' no tiene URL. Las pautas DUA están disponibles gratuitamente en https://www.cast.org."
 
 ### Step 6: Re-structure to APA 7 markdown
 
@@ -119,10 +131,10 @@ keywords-label: "Palabras clave:"
 **Bold-to-heading auto-conversion**: si el usuario aceptó corregir bold-as-headings, aplicar estas reglas en orden:
 
 1. Detectar líneas que comienzan con `**texto**` (sin `#` al inicio) — son candidatas a heading. Inferir el nivel APA según el contexto:
-   - Si es el título del paper repetido tras el resumen → `# Título` (Level 1)
-   - Si es una sección principal (Tema, Problema, Justificación, Objetivos, Antecedentes, Desarrollo, Recursos, Evaluación) → `## Título` (Level 2)
-   - Si es una subsección (Objetivo General, Específicos, Primera Parte, etc.) → `### Título` (Level 3)
-   - Si es una sub-subsección (Videos de referencia, Rúbrica) → `#### Título` (Level 4)
+   - Si es el título del paper repetido tras el resumen → `# Título` (Level 1, centrado, bold)
+   - Si es una sección principal (Tema, Problema, Justificación, Objetivos, Antecedentes, Desarrollo, Recursos, Evaluación) → `# Título` (Level 1, centrado, bold). **Importante**: en APA 7, las secciones principales comparten el mismo nivel jerárquico que el título repetido del paper. Usar `#` para todas.
+   - Si es una subsección (Objetivo General, Específicos, Primera Parte, etc.) → `## Título` (Level 2, alineado izquierda, bold)
+   - Si es una sub-subsección (Videos de referencia, Rúbrica) → `### Título` (Level 3, alineado izquierda, bold italic)
 2. Remover el **bold** del texto: `**Título**` → `## Título` (el heading markdown ya da el formato bold automáticamente)
 3. Detectar `## **Título**` (bold redundante dentro de heading) → `## Título`
 4. Eliminar headings vacíos como `### ` o `#### ` (líneas que solo contienen `###` sin texto)
@@ -174,6 +186,20 @@ Reference 2...
 ```
 
 This produces APA 7 styled caption (**Figure 1.** *Caption text.*) and populates the List of Figures.
+
+**YouTube / online video references**: si el documento incluye enlaces a videos, generar una entrada APA 7 en la lista de referencias:
+
+Formato APA 7 para video de YouTube:
+```
+Autor, A. A. [NombreCanal]. (año, Mes Día). *Título del video* [Video]. YouTube. \url{https://youtu.be/xxx}
+```
+Formato APA 7 para video en sitio web:
+```
+Autor, A. A. (año, Mes Día). *Título del video* [Video]. Nombre del sitio. \url{URL}
+```
+Si no se conoce el autor o la fecha exacta, reportar al usuario: "No se pudo generar la referencia APA del video 'X' porque falta el autor o la fecha de publicación. Por favor, verifica los metadatos del video."
+
+**Important**: Las referencias de videos deben incluirse dentro de `\begin{refsect}...\end{refsect}`, igual que las demás referencias.
 
 ### Step 7: Generate PDF with Pandoc
 
