@@ -12,6 +12,8 @@
 \geometry{margin=1in}
 \usepackage{setspace}
 \doublespacing
+\usepackage{ragged2e}
+\RaggedRight
 \setlength{\parindent}{0.5in}
 \setlength{\parskip}{0pt}
 \usepackage{authblk}
@@ -107,6 +109,7 @@ $endif$
 
 % ---- Title page ----
 \begin{titlepage}
+\thispagestyle{fancy}
 \centering
 \vspace*{3cm}
 {\doublespacing
