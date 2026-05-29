@@ -48,6 +48,7 @@ Read the user's `.md` file and check for:
 - **Metadata**: title, author(s), institutional affiliation, course, professor, date
 - **Abstract**: present? word count (150-250 words for thesis/article)
 - **Headings**: proper APA 7 levels (5 levels max)
+  - **Bold-as-headings**: detect lines where `**bold text**` is used as a heading (no `#` prefix). These no generan entradas en el TOC porque pandoc/LaTeX no las reconoce como secciones. Para detectarlos: buscar líneas que empiezan con `**` seguidas de texto y que no tienen `#` al inicio. También detectar `## **bold heading**` (bold redundante dentro de heading markdown).
 - **Citations**: detect parenthetical `(Author, year)` and narrative `Author (year)` patterns
 - **References section**: present? formatted correctly?
 - **Tables**: any `|` pipe tables or HTML tables — do they have APA-required title (italic) and note?
@@ -66,6 +67,7 @@ Ask questions in Spanish to gather missing information:
    - Tables without APA caption
    - Figures without description
    - Heading level misuse
+   - **Bold-as-headings**: "Se detectaron títulos escritos en **negrita** en vez de headings markdown. Sin esta corrección, el Índice (TOC) quedará vacío o incompleto. ¿Desea convertirlos automáticamente a headings `##`/`###`?"
  4. **Table of Contents**:
     - If **thesis**: TOC is **mandatory** — add `toc: true` to the YAML metadata.
     - If **essay** or **article**: ask "¿Desea incluir una tabla de contenido?" — add `toc: true` or `toc: false` to the YAML accordingly.
@@ -89,6 +91,7 @@ Report problems clearly:
 - "La figura en línea 40 no tiene descripción alternativa."
 - "La cita '(García, 2018)' no tiene entrada en referencias."
 - "El encabezado 'Metodología' debería ser Nivel 2, no Nivel 1."
+- "La línea X usa **negrita** como título en vez de heading markdown. Esto impide que aparezca en el TOC."
 
 ### Step 6: Re-structure to APA 7 markdown
 
@@ -111,6 +114,17 @@ abstract-label: "Resumen"
 keywords-label: "Palabras clave:"
 ---
 ```
+
+**Bold-to-heading auto-conversion**: si el usuario aceptó corregir bold-as-headings, aplicar estas reglas en orden:
+
+1. Detectar líneas que comienzan con `**texto**` (sin `#` al inicio) — son candidatas a heading. Inferir el nivel APA según el contexto:
+   - Si es el título del paper repetido tras el resumen → `# Título` (Level 1)
+   - Si es una sección principal (Tema, Problema, Justificación, Objetivos, Antecedentes, Desarrollo, Recursos, Evaluación) → `## Título` (Level 2)
+   - Si es una subsección (Objetivo General, Específicos, Primera Parte, etc.) → `### Título` (Level 3)
+   - Si es una sub-subsección (Videos de referencia, Rúbrica) → `#### Título` (Level 4)
+2. Remover el **bold** del texto: `**Título**` → `## Título` (el heading markdown ya da el formato bold automáticamente)
+3. Detectar `## **Título**` (bold redundante dentro de heading) → `## Título`
+4. Eliminar headings vacíos como `### ` o `#### ` (líneas que solo contienen `###` sin texto)
 
 **Body structure** (APA 7 headings use **formatting only**, never numbers like "1." or "1.1."):
 

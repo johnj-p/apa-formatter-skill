@@ -83,6 +83,13 @@
 - Template: `\listoffigures` ahora es condicional con `$if(lof)$` (controlable desde YAML).
 - SKILL.md Step 3: agregada pregunta sobre Índice de Figuras (solo si hay imágenes).
 
+## [2026-05-29] — Processed: Proyecto Pensamiento computacional.md (v2)
+- Type: article (ATE sobre pensamiento algorítmico con cubo Rubik)
+- Issues found: bold headings instead of markdown headings (TOC vacío), missing abstract/keywords, dangling quote, missing space after quote, `^^K` chars in YouTube URL table cells
+- Corrections applied: bold → proper markdown headings, abstract ~248 palabras, keywords en español, dangling quote removed, space added after quote, YouTube URLs wrapped in `<>` angle brackets, references in `\begin{refsect}` with `\textit{}`
+- PDF generated: yes (50.5 KB, 0 errors, via pandoc → xelatex ×2 con APA template)
+- Notes: TOC now shows all sections correctly. 0 overfull/underfull boxes. YouTube link table no longer produces ^^K errors.
+
 ## Feedback / Improvements
 - [ ] Add automatic DOI resolution via crossref API
 - [ ] Full figure APA caption support
