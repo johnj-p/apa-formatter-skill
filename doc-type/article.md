@@ -4,6 +4,7 @@
 - **Abstract**: required (150-250 words)
 - **Keywords**: 3-5 required
 - **Table of contents**: optional — ask the user. Set `toc: true/false` in YAML
+- **List of figures**: optional (solo si hay imágenes). Set `lof: true/false` en YAML, default `false`
 - **Headings**: max 3 levels
 - **References**: 15-40 sources typical
 - **Tables and figures**: numbered separately (Table 1, Figure 1)

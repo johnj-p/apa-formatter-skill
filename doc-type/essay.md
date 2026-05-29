@@ -4,5 +4,6 @@
 - **Abstract**: optional (ask user if they want one)
 - **Headings**: max 3 levels
 - **Table of contents**: optional — ask the user. Set `toc: true/false` in YAML
+- **List of figures**: optional (solo si hay imágenes). Set `lof: true/false` en YAML, default `false`
 - **References**: 5-15 sources typical
 - **Length**: typically 3-10 pages
