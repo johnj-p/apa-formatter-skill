@@ -119,7 +119,7 @@ keywords-label: "Palabras clave:"
 | Level 4 | `#### Section` | Indented, bold, ending with period. Text follows on same line. |
 | Level 5 | `##### Section` | Indented, bold italic, ending with period. Text follows on same line. |
 
-Key rule: **`# References`** is always a Level 1 heading (centered, bold).
+Key rule: **`# References`** is always a Level 1 heading (centered, bold). **Must start on a new page** — add `\newpage` before the references heading in the markdown.
 
 **References section** (APA 7: hanging indent — first line flush left, rest indented 0.5in):
 - `# References` heading (use the correct language: "Referencias" for Spanish)
@@ -137,9 +137,9 @@ Reference 2...
   - `\url{https://doi.org/xxx}` for DOIs/URLs — NOT angle brackets, because pandoc won't convert them inside raw LaTeX
   - `--` for page ranges (en-dash)
 
-**Tables**: reformat as pipe tables (use "Tabla" for Spanish, "Table" for English):
+**Tables**: reformat as pipe tables (use "Tabla" for Spanish, "Table" for English). Table number in **bold**, title in *italic*:
 ```
-Tabla 1
+**Tabla 1**
 *Table title in italic*
 
 | Col1 | Col2 |

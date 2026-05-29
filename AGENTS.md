@@ -29,6 +29,13 @@
 - Template defaults to English if variables are omitted
 - Test file updated with Spanish labels ("Resumen", "Palabras clave:", "Índice")
 
+## [2026-05-29] — Demo test: test-demo-apa.md
+- Type: article (exploratory study on AI in education)
+- Issues found: missing placeholder image (rendimiento-comparativo.png) — created dummy
+- Corrections applied: placeholder image added, LaTeX template updated (`\tightlist`, `\pandocbounded`)
+- PDF generated: yes (42 KB, via xelatex + APA template)
+- Notes: All invented references comply with APA 7 format (hanging indent, DOIs as `\url{}`, `\textit{}` for titles)
+
 ## Dev notes
 - Commits en español, descriptivos, con bullets de cambios
 - Preferir squash a un solo commit por feature antes de push

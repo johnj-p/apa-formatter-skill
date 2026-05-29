@@ -12,10 +12,23 @@
 \geometry{margin=1in}
 \usepackage{setspace}
 \doublespacing
-\usepackage{parskip}
 \setlength{\parindent}{0.5in}
+\setlength{\parskip}{0pt}
 \usepackage{authblk}
 \usepackage{fancyhdr}
+
+% ---- APA 7 heading styles (all same font size) ----
+\usepackage{titlesec}
+\titleformat{\section}{\normalsize\bfseries\centering}{}{0pt}{}
+\titleformat{\subsection}{\normalsize\bfseries}{}{0pt}{}
+\titleformat{\subsubsection}{\normalsize\bfseries\itshape}{}{0pt}{}
+\titleformat{\paragraph}{\normalsize\bfseries}{}{0pt}{}
+\titleformat{\subparagraph}{\normalsize\bfseries\itshape}{}{0pt}{}
+\titlespacing*{\section}{0pt}{0pt}{0pt}
+\titlespacing*{\subsection}{0pt}{0pt}{0pt}
+\titlespacing*{\subsubsection}{0pt}{0pt}{0pt}
+\titlespacing*{\paragraph}{0pt}{0pt}{0pt}
+\titlespacing*{\subparagraph}{0pt}{0pt}{0pt}
 
 \usepackage{tabularx}
 \usepackage{booktabs}
@@ -23,15 +36,30 @@
 \usepackage{hyphenat}
 \newcounter{none}
 \usepackage{graphicx}
+\usepackage[labelfont=bf, textfont=it, labelsep=newline, font=normalsize, singlelinecheck=off, position=above]{caption}
+\renewcommand{\figurename}{Figura}
+\renewcommand{\tablename}{Tabla}
+\renewcommand{\listfigurename}{Índice de figuras}
+\usepackage{float}
+\floatstyle{plaintop}
+\restylefloat{figure}
+\setlength{\intextsep}{0pt}
+\setlength{\textfloatsep}{0pt}
 $if(bibliography)$
 \usepackage[style=apa, backend=biber, citestyle=apa]{biblatex}
 $endif$
 \usepackage{xurl}
 \urlstyle{same}
+\providecommand{\tightlist}{\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\providecommand{\pandocbounded}[1]{#1}
+\usepackage{microtype}
+\setlength{\emergencystretch}{1em}
 \usepackage{hyperref}
 \hypersetup{colorlinks=true, linkcolor=black, citecolor=black, urlcolor=black, breaklinks=true}
 
+
 % ---- Page numbering ----
+\setlength{\headheight}{14.5pt}
 \pagestyle{fancy}
 \fancyhf{}
 \fancyhead[R]{\thepage}
@@ -100,13 +128,9 @@ $endif$
 % ---- Abstract page ----
 $if(abstract)$
 \newpage
-\begin{center}
-\textbf{\large $if(abstract-label)$$abstract-label$$else$Abstract$endif$}
-\end{center}
-\vspace{0.5cm}
+{\centering\textbf{\normalsize $if(abstract-label)$$abstract-label$$else$Abstract$endif$}\par}
 \noindent\abstractText\par
 $if(keywords)$
-\vspace{0.5cm}
 $if(keywords-label)$\textit{$keywords-label$}$else$\textit{Keywords:}$endif$ \keywordText
 $endif$
 $endif$
@@ -116,6 +140,9 @@ $if(toc)$
 \newpage
 $if(toc-label)$\renewcommand{\contentsname}{$toc-label$}$endif$
 \tableofcontents
+\newpage
+\listoffigures
+\addcontentsline{toc}{section}{\listfigurename}
 \newpage
 $endif$
 
