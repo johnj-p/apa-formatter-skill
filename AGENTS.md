@@ -40,6 +40,17 @@
 - Commits en español, descriptivos, con bullets de cambios
 - Preferir squash a un solo commit por feature antes de push
 
+## [2026-05-29] — Processed: test-investigacion-ia.md
+- Type: article
+- Issues found: none (document was pre-formatted correctly)
+- Corrections applied: N/A (no issues detected)
+- PDF generated: yes (46 KB, via xelatex + APA template)
+- Notes: Test document with invented references and figure. All citations match reference entries. Table and figure have proper APA 7 captions. Spanish labels (Resumen, Palabras clave, Índice) working correctly.
+
+## Reglas APA 7 — referencias a tablas/figuras
+- En el texto: **sin negrita** ("en la Tabla 1", "la Figura 2 muestra")
+- En el caption: número en **negrita** (`**Tabla 1**`), título en *cursiva*, nota sin formato especial
+
 ## Feedback / Improvements
 - [ ] Add automatic DOI resolution via crossref API
 - [ ] Full figure APA caption support
