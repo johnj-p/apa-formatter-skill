@@ -90,6 +90,11 @@
 - PDF generated: yes (50.5 KB, 0 errors, via pandoc → xelatex ×2 con APA template)
 - Notes: TOC now shows all sections correctly. 0 overfull/underfull boxes. YouTube link table no longer produces ^^K errors.
 
+## [2026-05-29] — Abstract/keywords auto-generation
+- SKILL.md Step 3: added sub-item to detect missing abstract/keywords, warn the user, and offer to generate them automatically from document content
+- If user accepts: generates 150-250 word descriptive abstract and representative keywords
+- If user declines: leaves placeholder and requests manual completion
+
 ## Feedback / Improvements
 - [ ] Add automatic DOI resolution via crossref API
 - [ ] Full figure APA caption support

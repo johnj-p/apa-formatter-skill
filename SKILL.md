@@ -61,6 +61,7 @@ Read the user's `.md` file and check for:
 Ask questions in Spanish to gather missing information:
 
 1. **Metadata**: if missing, ask: "¿Cuál es el título completo?", "¿Nombre del autor(es)?", "¿Institución?", "¿Curso?", "¿Profesor?", "¿Fecha de entrega?"
+   - **Abstract/Keywords**: si el documento **no tiene resumen (abstract) ni palabras clave**, mostrar el aviso: "El documento no incluye resumen ni palabras clave, que son requeridos en formato APA 7." Preguntar: "¿Desea que genere un resumen automáticamente basado en el contenido del documento?" Si el usuario acepta, generar un resumen descriptivo de 150-250 palabras extrayendo oraciones clave del cuerpo del documento, y palabras clave representativas. Si el usuario rechaza, dejar el abstract como placeholder y pedir que lo complete manualmente.
 2. **Document type**: confirm the classification
 3. **Corrections**: "Encontré los siguientes problemas — ¿desea que los corrija automáticamente?"
    - Citations without matching reference entry
