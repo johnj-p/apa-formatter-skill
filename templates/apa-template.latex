@@ -38,15 +38,23 @@
 \usepackage{hyphenat}
 \newcounter{none}
 \usepackage{graphicx}
-\usepackage[labelfont=bf, textfont=it, labelsep=newline, font=normalsize, singlelinecheck=off, position=above]{caption}
+\usepackage[labelfont=bf, textfont=it, labelsep=period, font=normalsize, singlelinecheck=off, position=bottom]{caption}
 \renewcommand{\figurename}{Figura}
 \renewcommand{\tablename}{Tabla}
 \renewcommand{\listfigurename}{Índice de figuras}
-\usepackage{float}
-\floatstyle{plaintop}
-\restylefloat{figure}
-\setlength{\intextsep}{0pt}
-\setlength{\textfloatsep}{0pt}
+\setlength{\tabcolsep}{2pt}
+
+% Reduce font size and spacing in longtables to help columns fit
+\let\originallongtable\longtable
+\let\originalendlongtable\endlongtable
+\renewenvironment{longtable}{\small\setlength{\LTleft}{\fill}\setlength{\LTright}{\fill}\originallongtable}{\originalendlongtable}
+
+% APA 7 block quotes: indent 0.5in from LEFT only
+\renewenvironment{quote}
+  {\list{}{\leftmargin=0.5in\rightmargin=0in\parindent=0pt}\item\relax}
+  {\endlist}
+
+% Longtable + minipage: se usa flujo pandoc → .tex → xelatex ×2
 $if(bibliography)$
 \usepackage[style=apa, backend=biber, citestyle=apa]{biblatex}
 $endif$
@@ -128,9 +136,10 @@ $endif$
 }
 \end{titlepage}
 
-% ---- Abstract page ----
+\setcounter{page}{2}
+
+% ---- Abstract page (starts on page 2 per APA 7) ----
 $if(abstract)$
-\newpage
 {\centering\textbf{\normalsize $if(abstract-label)$$abstract-label$$else$Abstract$endif$}\par}
 \noindent\abstractText\par
 $if(keywords)$

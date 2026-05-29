@@ -47,9 +47,31 @@
 - PDF generated: yes (46 KB, via xelatex + APA template)
 - Notes: Test document with invented references and figure. All citations match reference entries. Table and figure have proper APA 7 captions. Spanish labels (Resumen, Palabras clave, Índice) working correctly.
 
+## [2026-05-29] — Processed: test-apa-completo.md
+- Type: article (mixed-methods study on AI in higher education)
+- Issues found: abstract ~263 words (>250); typo "introductory"; decimal subcategory numbering (1.1, 1.2); `&` instead of `y` in Spanish citations
+- Corrections applied: abstract trimmed to 153 words; typo fixed; subcategories renamed to descriptive headings; `&` → `y` in all Spanish in-text citations
+- PDF generated: yes (98 KB, 36 pages, via pandoc → xelatex ×2 with APA template)
+- Template fixes applied:
+  - Page numbering: `\setcounter{page}{2}` after title page (abstract = p.2)
+  - Figures: APA 7 caption via `\caption` (bold label, italic text, period separator, position=bottom); `\listoffigures` populated correctly
+  - Block quotes: APA 7 style (left indent 0.5in only, via redefined `quote` environment)
+  - `\tabcolsep` reduced to 3pt + `\small` font inside longtables for tighter table fit
+- Notes: Full APA 7 test document with all 5 heading levels, 6 tables, 2 figures, 27 references, 4 appendices, block quotes, statistical notation, Spanish i18n labels, TOC. Pandoc's `--pdf-engine` mode still fails with longtable + nested minipage — workaround: pandoc → .tex → xelatex ×2. Table column width warnings persist (pandoc miscalculates for 7-column tables). Tables use manual captions so `\listoftables` is empty — pending improvement.
+
 ## Reglas APA 7 — referencias a tablas/figuras
 - En el texto: **sin negrita** ("en la Tabla 1", "la Figura 2 muestra")
 - En el caption: número en **negrita** (`**Tabla 1**`), título en *cursiva*, nota sin formato especial
+
+## [2026-05-29] — Auto-corrección de tablas (minipage en longtable)
+- Problema: Pandoc anida `\begin{minipage}[b]{\linewidth}` dentro de columnas `p{}` en `\longtable`, causando 24+ errores "Missing number" y 199+ overfull \hbox.
+- Solución: Script PowerShell en Step 7b de SKILL.md que elimina los wrappers `minipage` del `.tex` intermedio antes de xelatex.
+- Resultado: 0 Missing number, 1 overfull (2.5pt, insignificante), 30 páginas.
+- Template: `\footnotesize` → `\small` en `\renewenvironment{longtable}` para mejor legibilidad.
+- Tabla B1 convertida de pipe table a LaTeX puro (`p{}` columnas fijas, sin minipage) en `test-apa-completo.md`.
+- SKILL.md Step 2: advertencia para tablas con 6+ columnas o celdas >80 caracteres.
+- SKILL.md Step 7: flujo recomendado ahora es pandoc → .tex → corrección → xelatex ×2.
+- SKILL.md Step 7b: script de corrección automática de minipage anidado (post-pandoc, pre-xelatex).
 
 ## Feedback / Improvements
 - [ ] Add automatic DOI resolution via crossref API
