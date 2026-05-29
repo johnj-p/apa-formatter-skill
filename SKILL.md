@@ -66,10 +66,12 @@ Ask questions in Spanish to gather missing information:
    - Tables without APA caption
    - Figures without description
    - Heading level misuse
-4. **Table of Contents**:
-   - If **thesis**: TOC is **mandatory** — add `toc: true` to the YAML metadata.
-   - If **essay** or **article**: ask "¿Desea incluir una tabla de contenido?" — add `toc: true` or `toc: false` to the YAML accordingly.
-5. **References**: ask "¿Tienes un archivo .bib exportado de Zotero? Si no, intentaré usar las referencias escritas en el documento."
+ 4. **Table of Contents**:
+    - If **thesis**: TOC is **mandatory** — add `toc: true` to the YAML metadata.
+    - If **essay** or **article**: ask "¿Desea incluir una tabla de contenido?" — add `toc: true` or `toc: false` to the YAML accordingly.
+ 5. **List of Figures** (solo si el documento tiene imágenes/figuras):
+    - Ask "¿Desea incluir un Índice de Figuras?" — add `lof: true` or `lof: false` to YAML. Por defecto `false`.
+ 6. **References**: ask "¿Tienes un archivo .bib exportado de Zotero? Si no, intentaré usar las referencias escritas en el documento."
 
 ### Step 4: Validate references
 

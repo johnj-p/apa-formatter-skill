@@ -154,9 +154,11 @@ $if(toc)$
 $if(toc-label)$\renewcommand{\contentsname}{$toc-label$}$endif$
 \tableofcontents
 \newpage
+$if(lof)$
 \listoffigures
 \addcontentsline{toc}{section}{\listfigurename}
 \newpage
+$endif$
 $endif$
 
 % ---- Body ----

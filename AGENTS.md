@@ -80,6 +80,8 @@
 - Corrections applied: bold → ## headings, YAML frontmatter added (abstract placeholder, keywords, toc), APA captions added to 7 tables, citation adjusted to CAST (2011), dangling quote fixed, "Referencias" changed to # (Level 1), added `\usepackage{calc}` to template
 - PDF generated: yes (50 KB, 13 pages, 0 overfull, 0 errors)
 - Notes: The `\real{}` command used by pandoc in pipe table column widths requires the `calc` LaTeX package. Added to template.
+- Template: `\listoffigures` ahora es condicional con `$if(lof)$` (controlable desde YAML).
+- SKILL.md Step 3: agregada pregunta sobre Índice de Figuras (solo si hay imágenes).
 
 ## Feedback / Improvements
 - [ ] Add automatic DOI resolution via crossref API
