@@ -68,10 +68,18 @@
 - Solución: Script PowerShell en Step 7b de SKILL.md que elimina los wrappers `minipage` del `.tex` intermedio antes de xelatex.
 - Resultado: 0 Missing number, 1 overfull (2.5pt, insignificante), 30 páginas.
 - Template: `\footnotesize` → `\small` en `\renewenvironment{longtable}` para mejor legibilidad.
+- Se agregó `\usepackage{calc}` al template (necesario para que `\real{}` en columnas `p{}` funcione correctamente en xelatex).
 - Tabla B1 convertida de pipe table a LaTeX puro (`p{}` columnas fijas, sin minipage) en `test-apa-completo.md`.
 - SKILL.md Step 2: advertencia para tablas con 6+ columnas o celdas >80 caracteres.
 - SKILL.md Step 7: flujo recomendado ahora es pandoc → .tex → corrección → xelatex ×2.
 - SKILL.md Step 7b: script de corrección automática de minipage anidado (post-pandoc, pre-xelatex).
+
+## [2026-05-29] — Procesado: Proyecto Pensamiento computacional.md
+- Type: article (ATE sobre pensamiento algorítmico con cubo Rubik)
+- Issues found: bold headings instead of markdown headings, missing YAML metadata (abstract, keywords, toc), no APA captions in tables, dangling quote, citation "Alba Pastor (2013)" without reference, "Referencias" at wrong heading level
+- Corrections applied: bold → ## headings, YAML frontmatter added (abstract placeholder, keywords, toc), APA captions added to 7 tables, citation adjusted to CAST (2011), dangling quote fixed, "Referencias" changed to # (Level 1), added `\usepackage{calc}` to template
+- PDF generated: yes (50 KB, 13 pages, 0 overfull, 0 errors)
+- Notes: The `\real{}` command used by pandoc in pipe table column widths requires the `calc` LaTeX package. Added to template.
 
 ## Feedback / Improvements
 - [ ] Add automatic DOI resolution via crossref API
