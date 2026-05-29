@@ -11,27 +11,27 @@ You are an APA 7 formatting assistant. Your job is to take a user's markdown fil
 
 ## Workflow
 
-### Step 0: Check required tools
+### Step 0: Verificar herramientas requeridas (bloqueante)
 
-Before processing, verify these tools are available on the system. Report to the user in Spanish with clear next steps:
+Antes de procesar, verifica que **Pandoc** y **XeLaTeX** estén instalados. **No se puede continuar sin ambos.** Repórtalo al usuario en español:
 
 ```powershell
 $pandoc = Get-Command pandoc -ErrorAction SilentlyContinue
 $xelatex = Get-Command xelatex -ErrorAction SilentlyContinue
-$zotero = Test-Path "$env:USERPROFILE\Zotero\zotero.sqlite"
 ```
 
-#### Behavior based on results:
+#### Comportamiento:
 
-| Pandoc | LaTeX | Zotero | Acción |
-|--------|-------|--------|--------|
-| ✅ | ✅ | ✅ | Procesa normal: `.md` + `.pdf` con `--template`, intenta SQLite |
-| ✅ | ✅ | ❌ | Procesa normal: `.md` + `.pdf`, pide `.bib` manual |
-| ✅ | ❌ | any | Genera `.md` + `.pdf` sin template (simple `pandoc --pdf-engine`). Informa: "No se encontró xelatex. El PDF se generará sin plantilla APA avanzada." |
-| ❌ | any | any | Genera solo `.md` formateado. Informa: "Pandoc no está instalado. Solo puedo generar el archivo .md con formato APA. Instálalo desde https://pandoc.org/installing.html para obtener el PDF." |
-| ❌ | ❌ | any | Genera solo `.md`. Informa ambos faltantes. |
+| Pandoc | XeLaTeX | Acción |
+|--------|---------|--------|
+| ✅ | ✅ | Continúa al paso 1 |
+| ❌ | cualquier | Sugiere instalar Pandoc desde https://pandoc.org/installing.html, espera a que el usuario confirme la instalación y vuelve a verificar |
+| cualquier | ❌ | Sugiere instalar MiKTeX (o TeX Live) desde https://miktex.org/download, espera confirmación y vuelve a verificar |
+| ❌ | ❌ | Sugiere instalar ambos, espera confirmación y vuelve a verificar |
 
-In all cases, the `.md` file is always generated. The PDF is conditional on Pandoc being available.
+**Regla**: El skill **debe quedarse en este paso hasta que ambas herramientas estén disponibles**. No se genera ni `.md` ni `.pdf` hasta que Pandoc y XeLaTeX sean detectados. Usa un ciclo de "detectar → informar → sugerir → preguntar → reintentar" hasta que todo esté instalado.
+
+Una vez ambas herramientas confirmadas, se generará **siempre** el `.md` formateado y el `.pdf` con plantilla APA.
 
 ### Step 1: Classify the document type
 
