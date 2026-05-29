@@ -1,5 +1,7 @@
 # AGENTS.md — apa-formatter Skill
 
+> **Setup en máquina nueva:** después de clonar el repo, ejecuta `.\setup.ps1` para registrar el skill en opencode.
+
 ## [2026-05-25] Initial implementation
 - Created: SKILL.md, LaTeX template, CSS, CSL, doc-type helpers
 - Generic apa-template.latex with conditional variables

@@ -1,5 +1,5 @@
 ---
-name: apa-formatter
+name: apa-formatter-skill
 description: "Use when the user sends or mentions a .md academic file (essay, thesis, article) that needs APA 7th edition formatting, or when they say 'formato apa', 'normas apa', 'apa 7', 'apa format'. Converts markdown to APA 7 formatted .md and .pdf using Pandoc. Validates references, metadata, tables, figures, and citations."
 ---
 
@@ -161,7 +161,7 @@ Tabla 1
 Run the following command (without `--bibliography`/`--citeproc` if no `.bib` available):
 
 ```powershell
-$skillDir = "$env:USERPROFILE\.config\opencode\skills\apa-formatter"
+$skillDir = "$env:USERPROFILE\.config\opencode\skills\apa-formatter-skill"
 & "C:\Program Files\Pandoc\pandoc.exe" "{original}-apa.md" `
   --from markdown `
   --template "$skillDir\templates\apa-template.latex" `
