@@ -1,6 +1,6 @@
 ---
 name: apa-formatter-skill
-description: "Use when the user sends or mentions a .md academic file (essay, thesis, article) that needs APA 7th edition formatting, or when they say 'formato apa', 'normas apa', 'apa 7', 'apa format'. Converts markdown to APA 7 formatted .md and .pdf using Pandoc. Validates references, metadata, tables, figures, and citations."
+description: "Use when the user sends or mentions a .md academic file (essay, thesis, article) that needs APA 7th edition formatting, or when they say 'formato apa', 'normas apa', 'apa 7', 'apa format'. Converts markdown to APA 7 formatted .md and .pdf using Pandoc. Validates references, metadata, tables, figures, and citations in 4 stages: Stage A (pre-structure), Stage B (inline during restructuring), Stage C (pre-PDF), Stage D (post-PDF)."
 ---
 
 # APA 7th Edition Formatter Skill
@@ -106,6 +106,20 @@ Report problems clearly:
 - "La referencia 'Ministerio de Educación Nacional (2022)' no tiene URL. Los documentos gubernamentales disponibles en línea deben incluir el enlace."
 - "La referencia 'CAST (2011)' no tiene URL. Las pautas DUA están disponibles gratuitamente en https://www.cast.org."
 
+### Step 5.5: Pre-structure validation (Stage A)
+
+Antes de reestructurar el documento, realizar una **validación final del diagnóstico** para asegurar que todos los problemas detectados en Step 2–5 tienen una resolución planificada:
+
+1. **Lista de verificación**: recorrer cada issue reportado en Step 5 y confirmar que:
+   - ✓ El usuario fue consultado y aceptó/rechazó la corrección
+   - ✓ Se tiene la información necesaria para aplicar la corrección (metadata, tipo documento, preferencias TOC/LOF)
+   - ✓ Las referencias están validadas (sin `et al.` en lista, sin refs no citadas, con DOIs/URLs cuando corresponda)
+2. **Resumen de estado**: generar un breve resumen con:
+   - "X correcciones automáticas listas para aplicar"
+   - "Y advertencias que requieren acción manual del usuario"
+   - "Z issues bloqueantes (si hay, no continuar hasta resolverlos)"
+3. **Regla**: Si hay issues bloqueantes (metadata crítica faltante, referencias sin validar, herramientas no instaladas), **no continuar** a Step 6. Reportar al usuario qué falta resolver.
+
 ### Step 6: Re-structure to APA 7 markdown
 
 Generate a new `.md` file named `{original}-apa.md` with:
@@ -127,6 +141,15 @@ abstract-label: "Resumen"
 keywords-label: "Palabras clave:"
 ---
 ```
+
+**Inline validation (Stage B)**: mientras se reestructura cada sección, verificar en el momento:
+
+- ✓ **Título del paper**: si se repite tras el resumen, debe ser `#` (Level 1), centrado y bold. Validar que no falte.
+- ✓ **Cada sección principal**: confirmar que usa `#` (Level 1). Si alguna sección principal quedó como `##`, corregirla inmediatamente.
+- ✓ **Cada subsección**: verificar que el nivel (Level 2, 3, 4) coincida con la jerarquía del documento. Si un Level 2 está seguido de otro Level 2 sin contenido intermedio, revisar si debería ser Level 1.
+- ✓ **Cada tabla**: después de agregar el caption APA, verificar que tenga: número en **bold** (línea propia), título en *cursiva* (línea propia), pipe table debajo, y *Nota.* al final si aplica.
+- ✓ **Cada figura**: verificar que tenga caption APA en el alt text `![caption](ruta)`.
+- ✓ **Cada cita**: al reestructurar, verificar que el autor y año coincidan con alguna entrada en la lista de referencias. Si no, agregar la referencia faltante o corregir la cita.
 
 **Bold-to-heading auto-conversion**: si el usuario aceptó corregir bold-as-headings, aplicar estas reglas en orden:
 
@@ -201,6 +224,38 @@ Si no se conoce el autor o la fecha exacta, reportar al usuario: "No se pudo gen
 
 **Important**: Las referencias de videos deben incluirse dentro de `\begin{refsect}...\end{refsect}`, igual que las demás referencias.
 
+### Step 6.5: Pre-PDF validation (Stage C)
+
+Antes de generar el PDF, realizar una **validación final del contenido del `.md` formateado**. Leer el archivo `{original}-apa.md` generado y verificar:
+
+1. **YAML frontmatter**: ¿tiene todos los campos requeridos? (`title`, `author`, `institution`, `abstract`, `keywords`, `toc`, `abstract-label`, `keywords-label`)
+2. **Resumen**: ¿entre 150–250 palabras? ¿sin sangría? ¿en párrafo único?
+3. **Keywords**: ¿3–5 palabras? ¿separadas por comas? ¿en minúscula?
+4. **Headings**:
+   - `#` solo para título repetido del paper y secciones principales (verificar que no haya `#` de más)
+   - `##` para subsecciones
+   - `###` para sub-subsecciones
+   - No debe haber números en los headings (ej. "1. Introducción")
+   - No debe haber headings vacíos
+5. **Citas vs Referencias**: hacer un barrido final:
+   - Extraer todos los patrones `(Autor, año)` y `Autor (año)` del texto
+   - Extraer todas las entradas dentro de `\begin{refsect}...\end{refsect}`
+   - Verificar correspondencia **biunívoca**: cada cita tiene su referencia y viceversa
+   - Reportar discrepancias: "La cita X no tiene referencia" o "La referencia Y no se cita en el texto"
+6. **Tablas**: cada tabla debe tener:
+   - Número en **bold** (`**Tabla N**`)
+   - Título en *cursiva* en la línea siguiente
+   - Pipe table debajo
+   - *Nota.* al final si aplica
+   - Las celdas de la tabla no deben contener texto excesivamente largo (>80 caracteres en tablas de 3+ columnas)
+7. **Figuras**: verificar que las rutas de imagen existan (si aplica)
+8. **URLs**: dentro de la refsect, verificar que usen `\url{}`, no `<>`
+9. **`\newpage`**: ¿hay un `\newpage` antes de `# Referencias`? Si no, agregarlo.
+
+**Si hay errores**: corregirlos directamente en el archivo `.md` y volver a validar. No continuar a Step 7 hasta que Stage C pase sin errores.
+
+**Si todo está correcto**: "✓ Validación pre-PDF superada. Generando PDF..."
+
 ### Step 7: Generate PDF with Pandoc
 
 **⚠ Importante**: El método directo `--pdf-engine=xelatex` falla si el documento contiene tablas (pandoc anida `\begin{minipage}` dentro de `\longtable`, causando errores "Missing number"). Usa siempre el flujo en **dos pasos**:
@@ -266,6 +321,36 @@ Si la plantilla LaTeX falla por cualquier razón, genera un PDF simple:
 Esto no usará formato APA pero al menos produce un PDF.
 
 Report success and output file paths to the user.
+
+### Step 7.5: Post-PDF validation (Stage D)
+
+Después de generar el PDF, realizar una **validación de la salida** para detectar problemas que solo se manifiestan en la compilación:
+
+1. **Revisar el log de LaTeX**: leer `{original}-apa.log` y buscar:
+   - `"Error"` — si hay errores, el PDF puede estar incompleto o corrupto. Reportar y sugerir revisar el `.tex` intermedio.
+   - `"Overfull \hbox"` — si hay muchos (>5) o muy severos (>50pt), revisar las tablas anchas o URLs largas. Sugerir ajustes.
+   - `"Underfull \hbox"` — generalmente estético, reportar solo si hay muchos (>20).
+   - `"Warning"` — revisar warnings de referencias cruzadas (`Rerun to get cross-references right`), citas no resueltas, o paquetes faltantes.
+2. **Verificar páginas**: ¿el número de páginas es razonable para el tipo de documento?
+   - Article típico: 5–20 páginas
+   - Thesis: 30–100+ páginas
+   - Essay: 3–10 páginas
+   - Si el PDF tiene 0 páginas o >200 sin justificación, reportar anomalía.
+3. **Verificar el PDF**: 
+   - ¿El archivo existe y tiene tamaño > 0 KB?
+   - ¿El nombre corresponde a `{original}-apa.pdf`?
+4. **Verificar TOC**: si `toc: true`, abrir el PDF y confirmar que el TOC no está vacío (esto se puede verificar en el log: si el TOC tiene entradas, aparecerán en el `.toc` generado).
+5. **Verificar minipage bug**: si en Stage 7b se detectó y corrigió minipage, confirmar en el log que ya no hay errores "Missing number" relacionados con `longtable`.
+6. **Resumen de calidad**: generar un reporte breve:
+   ```
+   [PDF] {original}-apa.pdf
+   ├─ Páginas: N
+   ├─ Errores: 0
+   ├─ Overfull: N (máx Xpt)
+   ├─ Underfull: N
+   └─ TOC: {OK|vacío}
+   ```
+   Si el reporte muestra problemas graves (errores, TOC vacío, 0 páginas), **no marcar como éxito** y sugerir correcciones. Si los problemas son leves (pocos overfull estéticos), reportar pero continuar.
 
 ### Step 8: Update AGENTS.md
 
