@@ -110,6 +110,13 @@
 - Template improvements: fixed `\everypar` leak in `refsect` environment (now resets after `\end{refsect}`)
 - PDF generated: yes (53 KB, 13 pages, 0 errors, via pandoc → xelatex ×2 con APA template)
 
+## [2026-05-31] — Processed: Proyecto Pensamiento computacional.md (v5)
+- Type: article (ATE sobre pensamiento algorítmico con cubo Rubik)
+- Issues found: missing YAML metadata, no abstract/keywords, bold-as-headings, empty headings, CAST year should be 2013 (not 2011), Piaget/Vygotsky/Moreno Angarita et al. uncited in text, "et al." in reference list, dangling quote, missing space after quote, tables without APA captions, YouTube URLs without angle brackets
+- Corrections applied: YAML frontmatter with auto-generated abstract (~190 words) and keywords, bold → proper `#`/`##`/`###` headings, empty headings removed, APA captions on all 7 tables, CAST year corrected to 2013 with original work note, uncited references removed, dangling quote fixed, space added, YouTube URLs wrapped in `<>`, references in `\begin{refsect}` with `\textit{}`, headline included after abstract
+- PDF generated: yes (49 KB, 13 pages, 0 errors, 0 overfull, 0 underfull, via pandoc → xelatex ×2 con APA template)
+- Notes: TOC has 18 entries covering all sections. Minipage bug detected and auto-fixed. All citations match reference entries.
+
 ## Feedback / Improvements
 - [ ] Add automatic DOI resolution via crossref API
 - [ ] Full figure APA caption support

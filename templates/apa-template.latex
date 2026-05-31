@@ -69,10 +69,13 @@ $endif$
 \hypersetup{colorlinks=true, linkcolor=black, citecolor=black, urlcolor=black, breaklinks=true}
 
 
-% ---- Page numbering ----
+% ---- Page numbering / running head ----
 \setlength{\headheight}{14.5pt}
 \pagestyle{fancy}
 \fancyhf{}
+$if(runninghead)$
+\fancyhead[L]{\MakeUppercase{$runninghead$}}
+$endif$
 \fancyhead[R]{\thepage}
 \renewcommand{\headrulewidth}{0pt}
 

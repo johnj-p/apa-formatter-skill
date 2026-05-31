@@ -79,6 +79,8 @@ Ask questions in Spanish to gather missing information:
  5. **List of Figures** (solo si el documento tiene imágenes/figuras):
     - Ask "¿Desea incluir un Índice de Figuras?" — add `lof: true` or `lof: false` to YAML. Por defecto `false`.
  6. **References**: ask "¿Tienes un archivo .bib exportado de Zotero? Si no, intentaré usar las referencias escritas en el documento."
+ 7. **Repeated title (título repetido)**: "APA 7 requiere que el título del paper se repita centrado y en negrita después del resumen, funcionando como encabezado Level 1. ¿Desea incluir este título repetido?" Si el usuario acepta, agregar `# Título` centrado y bold después del abstract. Si rechaza, omitirlo y comenzar directamente con la introducción.
+ 8. **Running head (encabezado superior)**: "APA 7 para documentos profesionales usa un encabezado en la parte superior de cada página con el título abreviado en mayúscula (máx. 50 caracteres). ¿Desea incluir un running head?" Si el usuario acepta, preguntar: "¿Cuál es la versión abreviada del título?" y agregar `runninghead: "VERSIÓN ABREVIADA"` al YAML. Si rechaza, omitir.
 
 ### Step 4: Validate references
 
@@ -137,8 +139,10 @@ abstract: |
   150-250 word abstract here.
 keywords: [word1, word2, word3]
 toc: true
+toc-label: "Índice"
 abstract-label: "Resumen"
 keywords-label: "Palabras clave:"
+runninghead: "TÍTULO ABREVIADO (MÁX. 50 CARAC.)"
 ---
 ```
 
@@ -228,7 +232,7 @@ Si no se conoce el autor o la fecha exacta, reportar al usuario: "No se pudo gen
 
 Antes de generar el PDF, realizar una **validación final del contenido del `.md` formateado**. Leer el archivo `{original}-apa.md` generado y verificar:
 
-1. **YAML frontmatter**: ¿tiene todos los campos requeridos? (`title`, `author`, `institution`, `abstract`, `keywords`, `toc`, `abstract-label`, `keywords-label`)
+1. **YAML frontmatter**: ¿tiene todos los campos requeridos? (`title`, `author`, `institution`, `course`, `professor`, `date`, `abstract`, `keywords`, `toc`, `toc-label`, `abstract-label`, `keywords-label`). Si el usuario solicitó running head, verificar `runninghead` presente.
 2. **Resumen**: ¿entre 150–250 palabras? ¿sin sangría? ¿en párrafo único?
 3. **Keywords**: ¿3–5 palabras? ¿separadas por comas? ¿en minúscula?
 4. **Headings**:
