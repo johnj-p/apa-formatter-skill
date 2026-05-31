@@ -79,7 +79,7 @@ Ask questions in Spanish to gather missing information:
  5. **List of Figures** (solo si el documento tiene imágenes/figuras):
     - Ask "¿Desea incluir un Índice de Figuras?" — add `lof: true` or `lof: false` to YAML. Por defecto `false`.
  6. **References**: ask "¿Tienes un archivo .bib exportado de Zotero? Si no, intentaré usar las referencias escritas en el documento."
- 7. **Repeated title (título repetido)**: "APA 7 requiere que el título del paper se repita centrado y en negrita después del resumen, funcionando como encabezado Level 1. ¿Desea incluir este título repetido?" Si el usuario acepta, agregar `# Título` centrado y bold después del abstract. Si rechaza, omitirlo y comenzar directamente con la introducción.
+  7. **Repeated title**: agregar siempre `# Título` centrado y bold después del abstract (APA 7 obligatorio). No preguntar al usuario.
  8. **Running head (encabezado superior)**: "APA 7 para documentos profesionales usa un encabezado en la parte superior de cada página con el título abreviado en mayúscula (máx. 50 caracteres). ¿Desea incluir un running head?" Si el usuario acepta, preguntar: "¿Cuál es la versión abreviada del título?" y agregar `runninghead: "VERSIÓN ABREVIADA"` al YAML. Si rechaza, omitir.
 
 ### Step 4: Validate references
