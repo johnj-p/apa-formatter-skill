@@ -239,8 +239,9 @@ Antes de generar el PDF, realizar una **validación final del contenido del `.md
    - `#` solo para título repetido del paper y secciones principales (verificar que no haya `#` de más)
    - `##` para subsecciones
    - `###` para sub-subsecciones
-   - No debe haber números en los headings (ej. "1. Introducción")
-   - No debe haber headings vacíos
+    - No debe haber números en los headings (ej. "1. Introducción")
+    - No debe haber headings vacíos
+    - **Consistencia de niveles (bookmark level)**: no debe haber saltos de nivel mayores a 1 (ej. `#` → `###` sin `##` intermedio). Esto causa warnings `"Difference (2) between bookmark levels is greater than one"` de hyperref en LaTeX. Verificar que cada heading esté precedido por un heading del nivel inmediatamente superior. Si se detecta un salto de nivel, corregir el heading infractor subiéndolo o bajándolo de nivel.
 5. **Citas vs Referencias**: hacer un barrido final:
    - Extraer todos los patrones `(Autor, año)` y `Autor (año)` del texto
    - Extraer todas las entradas dentro de `\begin{refsect}...\end{refsect}`
